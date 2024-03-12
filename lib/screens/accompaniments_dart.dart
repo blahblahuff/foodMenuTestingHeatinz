@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:food_cafe/main.dart';
-import 'package:food_cafe/subt.dart';
+import 'package:food_cafe/widgets/product_listing_card.dart';
 
-class OfferScreen extends StatefulWidget {
-  const OfferScreen({super.key});
+class AccompanimentsScreen extends StatefulWidget {
+  const AccompanimentsScreen({super.key});
 
   @override
-  _OfferScreenState createState() => _OfferScreenState();
+  _AccompanimentsScreenState createState() => _AccompanimentsScreenState();
 }
 
-class _OfferScreenState extends State<OfferScreen> {
+class _AccompanimentsScreenState extends State<AccompanimentsScreen> {
   late List<Map<String, dynamic>> _products = [];
 
   @override
@@ -17,8 +17,8 @@ class _OfferScreenState extends State<OfferScreen> {
     super.initState();
     fetchData().then((data) {
       setState(() {
-        _products =
-            data['results'][0]['offer_products'].cast<Map<String, dynamic>>();
+        _products = data['results'][1]['maincategory_products']
+            .cast<Map<String, dynamic>>();
       });
     }).catchError((error) {
       print('Error fetching data: $error');
@@ -34,8 +34,10 @@ class _OfferScreenState extends State<OfferScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.network(product['content_image'][0]['thumbnail_image'],
-                fit: BoxFit.fill),
+            Image.network(
+              product['content_image'][0]['thumbnail_image'],
+              fit: BoxFit.fill,
+            ),
             Text(
                 'Price: \$${product['content_price'][0]['saleprice'] ?? 'Price not available'}'),
           ],
@@ -56,7 +58,7 @@ class _OfferScreenState extends State<OfferScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Offer Page'),
+        title: const Text('Accompaniments'),
       ),
       body: _products.isEmpty
           ? const Center(child: CircularProgressIndicator())

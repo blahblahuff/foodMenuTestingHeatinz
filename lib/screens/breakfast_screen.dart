@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_cafe/main.dart';
-import 'package:food_cafe/subt.dart';
+import 'package:food_cafe/widgets/product_listing_card.dart';
 
 class BreakfastScreen extends StatefulWidget {
   const BreakfastScreen({Key? key}) : super(key: key);
@@ -29,6 +29,10 @@ class _BreakfastScreenState extends State<BreakfastScreen> {
 
   void _handleProductTap(int index) {
     final product = _products[index];
+    final List contentImage = product['content_image'] ?? [];
+
+    final url =
+        contentImage.isNotEmpty ? contentImage[0]['thumbnail_image'] : null;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -36,10 +40,9 @@ class _BreakfastScreenState extends State<BreakfastScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.network(
-                product['content_image'][0]['thumbnail_image'] ??
-                    'image not available',
-                fit: BoxFit.fill),
+            url != null
+                ? Image.network(url, fit: BoxFit.fill)
+                : Icon(Icons.image),
             Text(
                 'Price: \$${product['content_price'][0]['saleprice'] ?? 'Price not available'}'),
           ],
@@ -58,6 +61,7 @@ class _BreakfastScreenState extends State<BreakfastScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('widget rebuld ');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Breakfast'),
@@ -67,15 +71,26 @@ class _BreakfastScreenState extends State<BreakfastScreen> {
           : ListView.builder(
               itemCount: _products.length,
               itemBuilder: (context, index) {
+                // print('builde runnig');
+
                 final product = _products[index];
-                final stringTitle = product['content_name'];
+
+                final stringTitle = product['content_name'] ?? '';
                 final String stringSub =
-                    product['content_price'][0]['saleprice'];
+                    product['content_price'][0]['saleprice'] ?? '';
+                final List contentImage = product['content_image'] ?? [];
+                print(contentImage);
+
+                final url = contentImage.isNotEmpty
+                    ? contentImage[0]['thumbnail_image']
+                    : null;
+                // final url =
+                //     product['content_image'][0]['thumbnail_image'] ?? '';
 
                 return ProductTile(
                   title: stringTitle,
-                  subtitle: 'Price: \$${stringSub}',
-                  imageUrl: product['content_image'][0]['thumbnail_image'],
+                  subtitle: "Price $stringSub",
+                  imageUrl: url,
                   onTap: () {
                     _handleProductTap(index);
                   },

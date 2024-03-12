@@ -1,9 +1,9 @@
-// main.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:food_cafe/accompaniments.dart';
-import 'package:food_cafe/breakfast.dart';
-import 'package:food_cafe/offerscreen.dart';
+import 'package:food_cafe/screens/accompaniments_dart.dart';
+import 'package:food_cafe/screens/breakfast_screen.dart';
+import 'package:food_cafe/screens/offer_screen.dart';
+
 import 'package:http/http.dart' as http;
 
 void main() {
